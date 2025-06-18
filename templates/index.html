@@ -1,0 +1,309 @@
+{% extends "base.html" %}
+
+{% block title %}MAC & HMAC Tool - Home{% endblock %} <!-- Opcional: Judul spesifik halaman -->
+
+{% block content %}
+<!-- BLOK STYLE INLINE SUDAH DIHAPUS DARI SINI -->
+
+<div class="row">
+  <div class="col-12">
+    <h1 class="mb-4">
+      <i class="fas fa-key"></i> MAC & HMAC Cryptography Tool
+    </h1>
+    <p class="lead">
+      Generate and verify Message Authentication Codes using various algorithms.
+    </p>
+  </div>
+</div>
+
+<!-- Navigation Tabs -->
+<ul class="nav nav-tabs mb-4" id="mainTabs" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button
+      class="nav-link active"
+      id="generate-tab"
+      data-bs-toggle="tab"
+      data-bs-target="#generate"
+      type="button"
+      role="tab"
+      aria-controls="generate"
+      aria-selected="true"
+    >
+      <i class="fas fa-plus-circle original-icon"></i> Generate MAC <!-- Tambah original-icon jika belum -->
+    </button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button
+      class="nav-link"
+      id="verify-tab"
+      data-bs-toggle="tab"
+      data-bs-target="#verify"
+      type="button"
+      role="tab"
+      aria-controls="verify"
+      aria-selected="false"
+    >
+      <i class="fas fa-check-circle original-icon"></i> Verify MAC <!-- Tambah original-icon jika belum -->
+    </button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button
+      class="nav-link"
+      id="file-tab"
+      data-bs-toggle="tab"
+      data-bs-target="#file"
+      type="button"
+      role="tab"
+      aria-controls="file"
+      aria-selected="false"
+    >
+      <i class="fas fa-file-alt original-icon"></i> File Integrity <!-- Tambah original-icon jika belum -->
+    </button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button
+      class="nav-link"
+      id="compare-tab"
+      data-bs-toggle="tab"
+      data-bs-target="#compare"
+      type="button"
+      role="tab"
+      aria-controls="compare"
+      aria-selected="false"
+    >
+      <i class="fas fa-chart-bar original-icon"></i> Compare Algorithms <!-- Tambah original-icon jika belum -->
+    </button>
+  </li>
+</ul>
+
+<div class="tab-content" id="mainTabContent">
+  <!-- Generate MAC Tab -->
+  <div class="tab-pane fade show active" id="generate" role="tabpanel" aria-labelledby="generate-tab">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h5><i class="fas fa-edit"></i> Input</h5>
+          </div>
+          <div class="card-body">
+            <form id="generateForm">
+              <div class="mb-3">
+                <label for="message" class="form-label">Message</label>
+                <div class="input-group">
+                  <textarea
+                    class="form-control"
+                    id="message"
+                    rows="4"
+                    placeholder="Enter your message here..."
+                    required
+                  ></textarea>
+                  <button type="button" class="btn btn-outline-secondary btn-clear" data-target="#message" title="Clear message">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="key" class="form-label">Secret Key</label>
+                 <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="key"
+                      placeholder="Enter secret key..."
+                      required
+                    />
+                    <button type="button" class="btn btn-outline-secondary btn-clear" data-target="#key" title="Clear key">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="form-text">Keep this key secret and secure!</div>
+              </div>
+              <button type="submit" class="btn btn-primary btn-spinner" id="generateMacButton">
+                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                <i class="fas fa-cog original-icon"></i> Generate MAC <!-- Pastikan original-icon ada -->
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div id="generateAlerts"></div>
+        <div id="generateResults" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Verify MAC Tab -->
+  <div class="tab-pane fade" id="verify" role="tabpanel" aria-labelledby="verify-tab">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h5><i class="fas fa-shield-alt"></i> Verification Input</h5>
+          </div>
+          <div class="card-body">
+            <form id="verifyForm">
+              <div class="mb-3">
+                <label for="verifyMessage" class="form-label">Original Message</label>
+                <div class="input-group">
+                  <textarea
+                    class="form-control"
+                    id="verifyMessage"
+                    rows="3"
+                    required
+                    placeholder="Enter original message..."
+                  ></textarea>
+                  <button type="button" class="btn btn-outline-secondary btn-clear" data-target="#verifyMessage" title="Clear message">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="verifyKey" class="form-label">Secret Key</label>
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="verifyKey"
+                    placeholder="Enter secret key..."
+                    required
+                  />
+                  <button type="button" class="btn btn-outline-secondary btn-clear" data-target="#verifyKey" title="Clear key">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="macValue" class="form-label">MAC Value to Verify</label>
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="macValue"
+                    placeholder="Enter MAC value..."
+                    required
+                  />
+                  <button type="button" class="btn btn-outline-secondary btn-clear" data-target="#macValue" title="Clear MAC value">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="macType" class="form-label">MAC Type</label>
+                  <select class="form-select" id="macType" required>
+                    <option value="simple_mac">Simple MAC</option>
+                    <option value="improved_mac">Improved MAC</option>
+                    <option value="custom_hmac">Custom HMAC</option>
+                    <option value="builtin_hmac" selected>Built-in HMAC</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="hashAlgorithm" class="form-label">Hash Algorithm</label>
+                  <select class="form-select" id="hashAlgorithm" required>
+                    <option value="SHA-256" selected>SHA-256</option>
+                    <option value="SHA-512">SHA-512</option>
+                    <option value="SHA-1">SHA-1</option>
+                    <option value="MD5">MD5</option>
+                  </select>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-success btn-spinner" id="verifyMacButton"> <!-- btn-spinner ditambahkan -->
+                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                <i class="fas fa-check original-icon"></i> Verify MAC <!-- Pastikan original-icon ada -->
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div id="verifyAlerts"></div>
+        <div id="verifyResults" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- File Integrity Tab -->
+  <div class="tab-pane fade" id="file" role="tabpanel" aria-labelledby="file-tab">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h5><i class="fas fa-upload"></i> File Upload</h5>
+          </div>
+          <div class="card-body">
+            <form id="fileForm" enctype="multipart/form-data">
+              <div class="mb-3">
+                <label for="fileInput" class="form-label">Select File</label>
+                <input
+                  type="file"
+                  class="form-control"
+                  id="fileInput"
+                  accept=".txt,.md,.json,.csv,.bin,.dat"
+                  required
+                />
+                <div class="form-text" id="fileInputHelp">
+                  Supported: .txt, .md, .json, .csv, .bin, .dat files. Max 10MB.
+                </div>
+                 <div id="fileNameDisplay" class="mt-1 small text-muted"></div>
+              </div>
+              <div class="mb-3">
+                <label for="fileKey" class="form-label">Secret Key</label>
+                 <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="fileKey"
+                      placeholder="Enter secret key..."
+                      required
+                    />
+                    <button type="button" class="btn btn-outline-secondary btn-clear" data-target="#fileKey" title="Clear key">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-info btn-spinner" id="fileIntegrityButton"> <!-- btn-spinner ditambahkan -->
+                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                <i class="fas fa-fingerprint original-icon"></i> Generate File MAC <!-- Pastikan original-icon ada -->
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div id="fileAlerts"></div>
+        <div id="fileResults" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Compare Algorithms Tab -->
+<div class="tab-pane fade" id="compare" role="tabpanel" aria-labelledby="compare-tab">
+  <div class="card">
+    <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <h5><i class="fas fa-chart-line"></i> Algorithm Comparison</h5>
+            <lottie-player
+              src="{{ url_for('static', filename='animations/loading_animation.json') }}" <!-- Pastikan path ini benar -->
+              background="transparent"
+              speed="1"
+              style="width: 60px; height: 60px;"
+              loop
+              autoplay
+            ></lottie-player>
+          </div>
+    </div>
+    <div class="card-body">
+      <button id="loadComparison" class="btn btn-warning btn-spinner"> <!-- btn-spinner ditambahkan -->
+        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+        <i class="fas fa-sync original-icon"></i> Run Comparison <!-- Pastikan original-icon ada -->
+      </button>
+      <div id="compareAlerts" class="mt-3"></div>
+      <div id="comparisonResults" class="mt-3" aria-live="polite"></div>
+    </div>
+  </div>
+</div>
+</div> <!-- Penutup untuk mainTabContent -->
+{% endblock %}
+
+<!-- BLOK SCRIPT INLINE SUDAH DIHAPUS DARI SINI -->
