@@ -1,1 +1,659 @@
+{% extends "base.html" %} {% block content %}
+<div class="row">
+  <div class="col-12">
+    <h1 class="mb-4">
+      <i class="fas fa-key"></i> MAC & HMAC Cryptography Tool
+    </h1>
+    <p class="lead">
+      Generate and verify Message Authentication Codes using various algorithms
+    </p>
+  </div>
+</div>
+
+<!-- Navigation Tabs -->
+<ul class="nav nav-tabs mb-4" id="mainTabs" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button
+      class="nav-link active"
+      id="generate-tab"
+      data-bs-toggle="tab"
+      data-bs-target="#generate"
+      type="button"
+    >
+      <i class="fas fa-plus-circle"></i> Generate MAC
+    </button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button
+      class="nav-link"
+      id="verify-tab"
+      data-bs-toggle="tab"
+      data-bs-target="#verify"
+      type="button"
+    >
+      <i class="fas fa-check-circle"></i> Verify MAC
+    </button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button
+      class="nav-link"
+      id="file-tab"
+      data-bs-toggle="tab"
+      data-bs-target="#file"
+      type="button"
+    >
+      <i class="fas fa-file-alt"></i> File Integrity
+    </button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button
+      class="nav-link"
+      id="compare-tab"
+      data-bs-toggle="tab"
+      data-bs-target="#compare"
+      type="button"
+    >
+      <i class="fas fa-chart-bar"></i> Compare Algorithms
+    </button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button
+      class="nav-link"
+      id="filehash-tab"
+      data-bs-toggle="tab"
+      data-bs-target="#filehash"
+      type="button"
+    >
+      <i class="fas fa-hashtag"></i> File Hash (All Types)
+    </button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button
+      class="nav-link"
+      id="verifyfilehash-tab"
+      data-bs-toggle="tab"
+      data-bs-target="#verifyfilehash"
+      type="button"
+    >
+      <i class="fas fa-check-double"></i> Verify File Hash
+    </button>
+  </li>
+</ul>
+
+<div class="tab-content" id="mainTabContent">
+  <!-- Generate MAC Tab -->
+  <div class="tab-pane fade show active" id="generate" role="tabpanel">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h5><i class="fas fa-edit"></i> Input</h5>
+          </div>
+          <div class="card-body">
+            <form id="generateForm">
+              <div class="mb-3">
+                <label for="message" class="form-label">Message</label>
+                <textarea
+                  class="form-control"
+                  id="message"
+                  rows="4"
+                  placeholder="Enter your message here..."
+                  required
+                ></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="key" class="form-label">Secret Key</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="key"
+                  placeholder="Enter secret key..."
+                  required
+                />
+                <div class="form-text">Keep this key secret and secure!</div>
+              </div>
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-cog"></i> Generate MAC
+              </button>
+              <div class="loading mt-2">
+                <div
+                  class="spinner-border spinner-border-sm"
+                  role="status"
+                ></div>
+                Generating...
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div id="generateResults"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Verify MAC Tab -->
+  <div class="tab-pane fade" id="verify" role="tabpanel">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h5><i class="fas fa-shield-alt"></i> Verification Input</h5>
+          </div>
+          <div class="card-body">
+            <form id="verifyForm">
+              <div class="mb-3">
+                <label for="verifyMessage" class="form-label"
+                  >Original Message</label
+                >
+                <textarea
+                  class="form-control"
+                  id="verifyMessage"
+                  rows="3"
+                  required
+                ></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="verifyKey" class="form-label">Secret Key</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="verifyKey"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="macValue" class="form-label"
+                  >MAC Value to Verify</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="macValue"
+                  placeholder="Enter MAC value..."
+                  required
+                />
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="macType" class="form-label">MAC Type</label>
+                  <select class="form-select" id="macType" required>
+                    <option value="simple_mac">Simple MAC</option>
+                    <option value="improved_mac">Improved MAC</option>
+                    <option value="custom_hmac">Custom HMAC</option>
+                    <option value="builtin_hmac" selected>Built-in HMAC</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="hashAlgorithm" class="form-label"
+                    >Hash Algorithm</label
+                  >
+                  <select class="form-select" id="hashAlgorithm" required>
+                    <option value="SHA-256" selected>SHA-256</option>
+                    <option value="SHA-512">SHA-512</option>
+                    <option value="SHA-1">SHA-1</option>
+                    <option value="MD5">MD5</option>
+                  </select>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-success mt-3">
+                <i class="fas fa-check"></i> Verify MAC
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div id="verifyResults"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- File Integrity Tab -->
+  <div class="tab-pane fade" id="file" role="tabpanel">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h5><i class="fas fa-upload"></i> File Upload</h5>
+          </div>
+          <div class="card-body">
+            <form id="fileForm" enctype="multipart/form-data">
+              <div class="mb-3">
+                <label for="fileInput" class="form-label">Select File</label>
+                <input
+                  type="file"
+                  class="form-control"
+                  id="fileInput"
+                  accept=".txt,.md,.json,.csv"
+                  required
+                />
+                <div class="form-text">
+                  Supported: .txt, .md, .json, .csv files
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="fileKey" class="form-label">Secret Key</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="fileKey"
+                  placeholder="Enter secret key..."
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-info">
+                <i class="fas fa-fingerprint"></i> Generate File MAC
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div id="fileResults"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Compare Algorithms Tab -->
+  <div class="tab-pane fade" id="compare" role="tabpanel">
+    <div class="card">
+      <div class="card-header">
+        <h5><i class="fas fa-chart-line"></i> Algorithm Comparison</h5>
+      </div>
+      <div class="card-body">
+        <button id="loadComparison" class="btn btn-warning">
+          <i class="fas fa-sync"></i> Load Algorithm Comparison
+        </button>
+        <div id="comparisonResults" class="mt-3"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- File Hash (All Types) Tab -->
+  <div class="tab-pane fade" id="filehash" role="tabpanel">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h5><i class="fas fa-hashtag"></i> File Hash (All Types)</h5>
+          </div>
+          <div class="card-body">
+            <form id="fileHashForm" enctype="multipart/form-data">
+              <div class="mb-3">
+                <label for="fileHashInput" class="form-label">Select Any File</label>
+                <input
+                  type="file"
+                  class="form-control"
+                  id="fileHashInput"
+                  required
+                />
+                <div class="form-text">
+                  Supported: Any file type (text, image, document, etc.)
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="fileHashKey" class="form-label">Secret Key (optional)</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="fileHashKey"
+                  placeholder="Enter secret key (optional)"
+                />
+                <div class="form-text">
+                  If provided, the hash will be calculated as H(key || file).
+                </div>
+              </div>
+              <button type="submit" class="btn btn-dark">
+                <i class="fas fa-hashtag"></i> Calculate File Hash
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div id="fileHashResults"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Verify File Hash Tab -->
+  <div class="tab-pane fade" id="verifyfilehash" role="tabpanel">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h5><i class="fas fa-check-double"></i> Verify File Hash</h5>
+          </div>
+          <div class="card-body">
+            <form id="verifyFileHashForm" enctype="multipart/form-data">
+              <div class="mb-3">
+                <label for="verifyFileHashInput" class="form-label">Select File</label>
+                <input
+                  type="file"
+                  class="form-control"
+                  id="verifyFileHashInput"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="verifyFileHashKey" class="form-label">Secret Key (optional)</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="verifyFileHashKey"
+                  placeholder="Enter secret key (optional)"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="verifyFileHashValue" class="form-label">Hash Value to Verify</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="verifyFileHashValue"
+                  placeholder="Paste hash value here..."
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="verifyFileHashAlg" class="form-label">Hash Algorithm</label>
+                <select class="form-select" id="verifyFileHashAlg" required>
+                  <option value="MD5">MD5</option>
+                  <option value="SHA-1">SHA-1</option>
+                  <option value="SHA-256" selected>SHA-256</option>
+                  <option value="SHA-512">SHA-512</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-success">
+                <i class="fas fa-check-double"></i> Verify File Hash
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div id="verifyFileHashResults"></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block scripts %}
+<script>
+  $(document).ready(function () {
+    // Generate MAC Form
+    $("#generateForm").on("submit", function (e) {
+      e.preventDefault();
+
+      const message = $("#message").val();
+      const key = $("#key").val();
+
+      $(".loading").show();
+
+      $.ajax({
+        url: "/generate_mac",
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({
+          message: message,
+          key: key,
+        }),
+        success: function (response) {
+          displayGenerateResults(response);
+          $(".loading").hide();
+        },
+        error: function (xhr) {
+          alert("Error: " + JSON.parse(xhr.responseText).error);
+          $(".loading").hide();
+        },
+      });
+    });
+
+    // Verify MAC Form
+    $("#verifyForm").on("submit", function (e) {
+      e.preventDefault();
+
+      const data = {
+        message: $("#verifyMessage").val(),
+        key: $("#verifyKey").val(),
+        mac_value: $("#macValue").val(),
+        mac_type: $("#macType").val(),
+        hash_algorithm: $("#hashAlgorithm").val(),
+      };
+
+      $.ajax({
+        url: "/verify_mac",
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(data),
+        success: function (response) {
+          displayVerifyResults(response);
+        },
+        error: function (xhr) {
+          alert("Error: " + JSON.parse(xhr.responseText).error);
+        },
+      });
+    });
+
+    // File Form
+    $("#fileForm").on("submit", function (e) {
+      e.preventDefault();
+
+      const formData = new FormData();
+      formData.append("file", $("#fileInput")[0].files[0]);
+      formData.append("key", $("#fileKey").val());
+
+      $.ajax({
+        url: "/file_integrity",
+        method: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+          displayFileResults(response);
+        },
+        error: function (xhr) {
+          alert("Error: " + JSON.parse(xhr.responseText).error);
+        },
+      });
+    });
+
+    // Load Comparison
+    $("#loadComparison").on("click", function () {
+      $.ajax({
+        url: "/compare_algorithms",
+        method: "GET",
+        success: function (response) {
+          displayComparisonResults(response);
+        },
+        error: function (xhr) {
+          alert("Error loading comparison");
+        },
+      });
+    });
+
+    // File Hash (All Types) Form
+    $("#fileHashForm").on("submit", function (e) {
+      e.preventDefault();
+      const formData = new FormData();
+      formData.append("file", $("#fileHashInput")[0].files[0]);
+      formData.append("key", $("#fileHashKey").val());
+      $.ajax({
+        url: "/file_hash_all_types",
+        method: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+          displayFileHashResults(response);
+        },
+        error: function (xhr) {
+          alert("Error: " + JSON.parse(xhr.responseText).error);
+        },
+      });
+    });
+
+    // Verify File Hash Form
+    $("#verifyFileHashForm").on("submit", function (e) {
+      e.preventDefault();
+      const formData = new FormData();
+      formData.append("file", $("#verifyFileHashInput")[0].files[0]);
+      formData.append("key", $("#verifyFileHashKey").val());
+      formData.append("hash_value", $("#verifyFileHashValue").val());
+      formData.append("algorithm", $("#verifyFileHashAlg").val());
+      $.ajax({
+        url: "/verify_file_hash_all_types",
+        method: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+          displayVerifyFileHashResults(response);
+        },
+        error: function (xhr) {
+          alert("Error: " + JSON.parse(xhr.responseText).error);
+        },
+      });
+    });
+
+    function displayGenerateResults(response) {
+      let html = '<div class="card result-card">';
+      html +=
+        '<div class="card-header"><h5><i class="fas fa-key"></i> Generated MACs</h5></div>';
+      html += '<div class="card-body">';
+
+      for (const [algorithm, methods] of Object.entries(response.results)) {
+        html += `<h6><span class="badge bg-secondary algorithm-badge">${algorithm}</span></h6>`;
+        html += '<div class="row mb-3">';
+
+        for (const [method, mac] of Object.entries(methods)) {
+          html += '<div class="col-md-6 mb-2">';
+          html += `<small class="text-muted">${method
+            .replace("_", " ")
+            .toUpperCase()}</small>`;
+          html += `<div class="hash-output">${mac}</div>`;
+          html += "</div>";
+        }
+        html += "</div>";
+      }
+
+      html += "</div></div>";
+      $("#generateResults").html(html);
+    }
+
+    function displayVerifyResults(response) {
+      const isValid = response.is_valid;
+      const cardClass = isValid ? "valid-mac" : "invalid-mac";
+      const icon = isValid
+        ? "fas fa-check-circle text-success"
+        : "fas fa-times-circle text-danger";
+      const status = isValid ? "VALID" : "INVALID";
+
+      let html = `<div class="card result-card ${cardClass}">`;
+      html += `<div class="card-header"><h5><i class="${icon}"></i> Verification Result: ${status}</h5></div>`;
+      html += '<div class="card-body">';
+      html += `<p><strong>Calculated MAC:</strong></p>`;
+      html += `<div class="hash-output">${response.calculated_mac}</div>`;
+      html += `<p class="mt-2"><strong>Provided MAC:</strong></p>`;
+      html += `<div class="hash-output">${response.provided_mac}</div>`;
+      html += `<p class="mt-2"><small class="text-muted">Algorithm: ${response.hash_algorithm} | Type: ${response.mac_type}</small></p>`;
+      html += "</div></div>";
+
+      $("#verifyResults").html(html);
+    }
+
+    function displayFileResults(response) {
+      let html = '<div class="card result-card">';
+      html +=
+        '<div class="card-header"><h5><i class="fas fa-file-shield"></i> File Integrity MACs</h5></div>';
+      html += '<div class="card-body">';
+      html += `<p><strong>File:</strong> ${response.filename} (${response.file_size} bytes)</p>`;
+
+      for (const [algorithm, methods] of Object.entries(response.results)) {
+        html += `<h6><span class="badge bg-info algorithm-badge">${algorithm}</span></h6>`;
+        html += '<div class="row mb-3">';
+
+        for (const [method, mac] of Object.entries(methods)) {
+          html += '<div class="col-md-6 mb-2">';
+          html += `<small class="text-muted">${method
+            .replace("_", " ")
+            .toUpperCase()}</small>`;
+          html += `<div class="hash-output">${mac}</div>`;
+          html += "</div>";
+        }
+        html += "</div>";
+      }
+
+      html += "</div></div>";
+      $("#fileResults").html(html);
+    }
+
+    function displayComparisonResults(response) {
+      let html = '<div class="row">';
+
+      for (const [algorithm, info] of Object.entries(response.algorithm_info)) {
+        const results = response.results[algorithm];
+
+        html += '<div class="col-md-6 mb-4">';
+        html += '<div class="card">';
+        html += `<div class="card-header"><h6>${algorithm}</h6></div>`;
+        html += '<div class="card-body">';
+        html += `<p><small><strong>Output Size:</strong> ${info.output_size}</small></p>`;
+        html += `<p><small><strong>Security:</strong> ${info.security}</small></p>`;
+        html += `<p><small><strong>Speed:</strong> ${info.speed}</small></p>`;
+
+        html += '<h6 class="mt-3">Sample MACs:</h6>';
+        for (const [method, mac] of Object.entries(results)) {
+          html += `<small class="text-muted">${method.replace(
+            "_",
+            " "
+          )}</small>`;
+          html += `<div class="hash-output mb-2" style="font-size: 0.7em;">${mac}</div>`;
+        }
+
+        html += "</div></div></div>";
+      }
+
+      html += "</div>";
+      html += `<div class="alert alert-info mt-3">`;
+      html += `<strong>Test Message:</strong> "${response.test_message}"<br>`;
+      html += `<strong>Test Key:</strong> "${response.test_key}"`;
+      html += `</div>`;
+
+      $("#comparisonResults").html(html);
+    }
+
+    function displayFileHashResults(response) {
+      let html = '<div class="card result-card">';
+      html +=
+        '<div class="card-header"><h5><i class="fas fa-hashtag"></i> File Hash Results</h5></div>';
+      html += '<div class="card-body">';
+      html += `<p><strong>File:</strong> ${response.filename} (${response.file_size} bytes)</p>`;
+      for (const [alg, hash] of Object.entries(response.hashes)) {
+        html += `<div><span class="badge bg-dark">${alg}</span> <span class="hash-output">${hash}</span></div>`;
+      }
+      html += '</div></div>';
+      $("#fileHashResults").html(html);
+    }
+
+    function displayVerifyFileHashResults(response) {
+      const isValid = response.is_valid;
+      const cardClass = isValid ? "valid-mac" : "invalid-mac";
+      const icon = isValid
+        ? "fas fa-check-circle text-success"
+        : "fas fa-times-circle text-danger";
+      const status = isValid ? "VALID" : "INVALID";
+      let html = `<div class="card result-card ${cardClass}">`;
+      html += `<div class="card-header"><h5><i class="${icon}"></i> Verification Result: ${status}</h5></div>`;
+      html += '<div class="card-body">';
+      html += `<p><strong>Calculated Hash:</strong></p>`;
+      html += `<div class="hash-output">${response.calculated_hash}</div>`;
+      html += `<p class="mt-2"><strong>Provided Hash:</strong></p>`;
+      html += `<div class="hash-output">${response.provided_hash}</div>`;
+      html += `<p class="mt-2"><small class="text-muted">Algorithm: ${response.algorithm}</small></p>`;
+      html += '</div></div>';
+      $("#verifyFileHashResults").html(html);
+    }
+  });
+</script>
+{% endblock %}
 
