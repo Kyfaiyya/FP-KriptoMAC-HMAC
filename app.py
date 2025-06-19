@@ -230,8 +230,4 @@ def verify_file_hash_all_types():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-<<<<<<< HEAD
     app.run(debug=True)
-=======
-    app.run(debug=True)
->>>>>>> fdd11c480109dbd6d7921cf8ee8b67f5ae9d0225
