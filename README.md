@@ -2,6 +2,18 @@
 
 Final Project untuk mata kuliah **Kriptografi** dengan tema **Message Authentication Code (MAC)** dan **Hash-based Message Authentication Code (HMAC)**.
 
+## 📋 Daftar Anggota Kelompok
+
+| Nama                 | NRP        |
+| -------------------- | ---------- |
+| Daffa Rajendra P     | 5027231009 |
+| Muhamad Arrayyan     | 5027231014 |
+| Athalla Barka Fadhil | 5027231018 |
+| Naufal Syafi Hakim   | 5027231022 |
+| RM. Novian Malcolm B | 5027231035 |
+| Muhammad Dzaky Ahnaf | 5027231039 |
+| Dzaky Faiq Fayyadhi  | 5027231047 |
+
 ## 📋 Deskripsi Project
 
 Aplikasi web interaktif yang mengimplementasikan dan mendemonstrasikan konsep MAC dan HMAC dalam kriptografi. Aplikasi ini menyediakan berbagai fitur untuk memahami, menggunakan, dan membandingkan berbagai implementasi MAC dan HMAC.
@@ -85,8 +97,8 @@ mac-hmac-crypto-tool/
 
    ```bash
    # Jika menggunakan git
-   git clone <repository-url>
-   cd mac-hmac-crypto-tool
+   git clone https://github.com/Kyfaiyya/FP-KriptoMAC-HMAC
+   cd FP-KriptoMAC-HMAC
    ```
 
 2. **Install dependencies**
@@ -292,7 +304,6 @@ Berdasarkan test suite yang dijalankan:
 ## 📄 Lisensi
 
 Project ini dibuat untuk tujuan edukasi dalam rangka Final Project mata kuliah Kriptografi.
-
 
 ## 🚀 Cara Menjalankan Program
 
