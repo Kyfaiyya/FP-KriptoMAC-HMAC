@@ -5,32 +5,63 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* Font system yang lebih modern */
-  background-color: #f4f7f6; /* Warna latar belakang body yang sedikit berbeda */
+  font-family: 'Poppins', sans-serif;
+  
+  /* --- GANTI BAGIAN BACKGROUND INI --- */
+  
+  /* Warna fallback jika gambar gagal dimuat */
+  background-color: #f0f2f5; 
+  
+  /* Ganti 'watercolor-bg.jpg' dengan nama file gambar Anda */
+  background-image: url('../images/bg.png'); 
+  
+  /* Properti Kunci untuk membuat gambar menutupi seluruh layar */
+  background-repeat: no-repeat; /* 1. Mencegah gambar berulang */
+  background-size: 500px;       /* 2. (Kunci Utama) Membuat gambar menutupi seluruh area */
+  background-position: center;  /* 3. Memposisikan gambar di tengah */
+  background-attachment: fixed; /* 4. (Sangat Direkomendasikan) Membuat background diam saat halaman di-scroll, memberikan efek parallax yang elegan */
+
 }
 main {
   flex-grow: 1;
 }
 
 /* == Navbar == */
-.navbar-brand {
-  font-weight: bold;
-}
-.navbar-dark .navbar-nav .nav-link.active {
-    font-weight: 500; /* Sedikit penekanan pada link aktif */
+.navbar {
+  /* BARU: Efek transisi dan shadow halus */
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 /* == General Card Styling == */
 .card {
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.075); /* Shadow yang lebih halus */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06); /* Shadow yang lebih lembut dan dalam */
   border: none;
-  margin-bottom: 1.5rem; /* Margin bawah yang lebih konsisten */
-  border-radius: 0.375rem; /* Bootstrap 5 default border-radius */
+  margin-bottom: 1.5rem;
+  border-radius: 0.5rem; /* Sedikit lebih bulat */
+  /* BARU: Transisi untuk efek hover */
+  transition: all 0.3s ease-in-out;
 }
+
+/* BARU: Efek 'lift' saat hover di kartu */
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+/* style.css */
 .card-header {
-    background-color: #fff; /* Header kartu default putih */
-    border-bottom: 1px solid #e9ecef; /* Garis pemisah header yang halus */
-    padding: 0.75rem 1.25rem; /* Padding standar Bootstrap */
+    background-color: #f8f9fa; /* Latar belakang header yang sangat samar */
+    border-bottom: 1px solid #e9ecef;
+}
+
+.btn {
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.btn:hover {
+  transform: translateY(-2px) scale(1.02); /* Sedikit naik dan membesar */
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15); /* Shadow lebih kuat */
 }
 .card-header h5, .card-header h6 {
     margin-bottom: 0;
@@ -42,9 +73,9 @@ main {
   /* border-left: 4px solid #0d6efd; /* Ini bisa di-override */
   margin-top: 1rem;
 }
-.result-card .card-header.bg-light { /* Untuk header hasil generate */
-  background-color: #f8f9fa !important;
-  border-bottom: 1px solid #dee2e6;
+.result-card .card-header .carousel-indicators .active {
+  background-color: #0d6efd; /* Warna indikator aktif (default/primary) */
+  opacity: 1;
 }
 
 /* == Hash Output Box == */
@@ -80,11 +111,14 @@ main {
 .result-card .carousel {
   /* Bisa ditambahkan background jika diperlukan */
 }
+.result-card.carousel-file-integrity .card-header .carousel-indicators .active {
+    background-color: #0dcaf0; /* Warna Bootstrap --bs-info */
+}
 .result-card .carousel-item .algorithm-slide-content {
   min-height: 280px; /* Sesuaikan sesuai kebutuhan, agar tinggi konsisten */
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center; /* DIPERBAIKI: Konten sekarang akan berada di tengah */
 }
 .result-card .algorithm-title { /* Untuk judul algoritma di dalam slide */
   font-weight: 600;
@@ -113,7 +147,7 @@ main {
   height: 3rem; /* Tinggi tombol panah */
   border-radius: 50%; /* Membuat tombol panah bulat */
   top: 50%;
-  transform: translateY(-50%);
+  margin-top: -1.5rem; /* Setengah dari tinggi tombol (3rem) */
   opacity: 0.6;
   transition: opacity 0.15s ease-in-out, background-color 0.15s ease-in-out;
 }
@@ -162,9 +196,46 @@ main {
   opacity: 1;
 }
 
+.hero-section {
+  padding: 3rem 1.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  border-radius: 0.5rem; /* Perbaikan 1: Nilai border-radius yang benar */
+  
+  /* Perbaikan 2: Latar belakang biru semi-transparan yang konsisten */
+  /* Saya sedikit menaikkan opacity menjadi 0.7 untuk keterbacaan yang lebih baik */
+  background: linear-gradient(135deg, rgba(13, 110, 253, 0.6) 0%, rgba(10, 88, 202, 0.6) 100%);
+  
+  /* Efek kaca buram (opsional, tapi sangat direkomendasikan) */
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
 
+  /* Shadow untuk efek kedalaman */
+  box-shadow: 0 8px 25px rgba(9, 81, 189, 0.2);
+
+  /* Animasi saat halaman dimuat */
+  animation: fadeInUp 0.8s ease-out;
+}
+
+/* Perbaikan 3: Aturan untuk Teks di Dalamnya */
+.hero-section h1, .hero-section p.lead {
+    color: white; /* Pastikan semua teks berwarna putih */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Beri shadow agar teks "pop out" dari background */
+}
+
+.hero-section p.lead {
+  font-size: 1.15rem;
+  color: #495057; /* Warna teks Bootstrap (abu-abu gelap) */
+  opacity: 1; /* Pastikan opacity kembali ke 1 */
+}
 /* == Form Elements == */
 /* Tombol Clear pada Input Fields */
+.form-control:focus, .form-select:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    transform: scale(1.01); /* Sedikit membesar saat fokus */
+    transition: transform 0.2s ease-in-out;
+}
 .input-group > .form-control + .btn-clear,
 .input-group > .form-select + .btn-clear,
 .input-group > textarea.form-control + .btn-clear {
@@ -233,4 +304,104 @@ footer p.text-muted {
 /* == Utility (Jika Perlu) == */
 .text-monospace { /* Kelas helper jika ingin font monospace secara eksplisit */
   font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+.nav-tabs {
+  border-bottom: none; /* Hapus garis bawah bawaan */
+}
+
+.nav-tabs .nav-link {
+  border: none;
+  border-radius: 0.375rem; /* Samakan dengan border-radius kartu */
+  padding: 0.6rem 1rem;
+  margin-right: 0.5rem;
+  color: #6c757d; /* Warna abu-abu untuk tab tidak aktif */
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+/* Tab yang aktif */
+.nav-tabs .nav-link.active {
+  background-color: #0d6efd;
+  color: white;
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.25);
+  transform: translateY(-2px);
+}
+
+/* Efek hover pada tab yang tidak aktif */
+.nav-tabs .nav-link:not(.active):hover {
+  background-color: #e9ecef;
+  color: #212529;
+}
+/* == Animasi == */
+/* BARU: Kita akan menggunakan kelas dari Animate.css, tapi ini sebagai contoh jika ingin custom */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 40px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.8s ease-in-out forwards;
+}
+/* =================================== */
+/* == EFEK KILAU CAHAYA (SHIMMER) == */
+/* =================================== */
+
+/* 1. Definisikan animasi pergerakan kilau */
+@keyframes shimmer {
+  0% {
+    /* Mulai dari luar layar di sebelah kiri */
+    transform: translateX(-100%);
+  }
+  100% {
+    /* Berakhir di luar layar di sebelah kanan */
+    transform: translateX(100%);
+  }
+}
+
+/* 2. Siapkan elemen yang akan diberi efek */
+.shimmer-effect {
+  position: relative; /* Penting agar ::after bisa diposisikan di atasnya */
+  overflow: hidden;  /* Sembunyikan kilau saat berada di luar batas elemen */
+}
+
+/* 3. Buat elemen kilau itu sendiri menggunakan ::after */
+.shimmer-effect::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  /* Gradasi yang menciptakan 'berkas cahaya' */
+  /* Terdiri dari: transparan -> putih samar -> transparan */
+  background: linear-gradient(
+    110deg, /* Sedikit miring agar terlihat lebih natural */
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0.25) 50%, /* Puncak cahaya di tengah, 0.25 adalah tingkat kecerahan */
+    rgba(255, 255, 255, 0) 60%
+  );
+  
+  /* Terapkan animasi */
+  /* Nama: shimmer, Durasi: 3 detik, Looping: tak terbatas */
+  animation: shimmer 3s infinite;
+
+  /* SANGAT PENTING: Pastikan lapisan kilau ini tidak bisa di-klik, */
+  /* agar link di navbar/footer tetap berfungsi! */
+  pointer-events: none;
+}
+
+/* 4. (Opsional) Beri sedikit jeda agar animasi header dan footer tidak bersamaan */
+.navbar.shimmer-effect::after {
+    animation-delay: 0.5s; /* Animasi header dimulai setelah 0.5 detik */
+}
+
+footer.shimmer-effect::after {
+    animation-delay: 1.5s; /* Animasi footer dimulai lebih lambat */
 }
