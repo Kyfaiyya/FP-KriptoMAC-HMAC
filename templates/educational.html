@@ -1,8 +1,17 @@
-{% extends "base.html" %} {% block title %}Educational Content - MAC & HMAC{%
-endblock %} {% block content %}
-<div class="row">
+{% extends "base.html" %}
+
+{% block title %}Learn about MAC & HMAC - A Deep Dive{% endblock %}
+{% block meta_description %}Understand the concepts of Message Authentication Code (MAC) and HMAC, including formulas,
+security considerations, and real-world use cases.{% endblock %}
+
+{% block content %}
+<div class="row educational-page">
   <div class="col-12">
-    <h1 class="mb-4"><i class="fas fa-graduation-cap"></i> Learn MAC & HMAC</h1>
+    <div class="p-4 mb-4 bg-light rounded-3">
+      <h1 class="display-5"><i class="fas fa-graduation-cap me-2" aria-hidden="true"></i> Learning Center: MAC & HMAC
+      </h1>
+      <p class="lead">A comprehensive guide to understanding Message Authentication Codes.</p>
+    </div>
   </div>
 </div>
 
@@ -10,107 +19,52 @@ endblock %} {% block content %}
   <div class="col-md-8">
     <div class="card mb-4">
       <div class="card-header">
-        <h4><i class="fas fa-info-circle"></i> What is MAC?</h4>
+        <h2><i class="fas fa-info-circle me-2" aria-hidden="true"></i>What is a MAC?</h2>
       </div>
       <div class="card-body">
         <p>
-          <strong>Message Authentication Code (MAC)</strong> adalah nilai
-          kriptografi yang digunakan untuk memverifikasi integritas dan
-          autentisitas pesan.
+          A <strong>Message Authentication Code (MAC)</strong> is a short piece of information used to authenticate a
+          message—in other words, to confirm that the message came from the stated sender (its authenticity) and has not
+          been changed (its integrity).
         </p>
-
-        <h5>Fungsi Utama MAC:</h5>
+        <h3>Key Functions of a MAC:</h3>
         <ul>
-          <li>
-            <strong>Authentication:</strong> Memverifikasi bahwa pesan berasal
-            dari pengirim yang sah
-          </li>
-          <li>
-            <strong>Integrity:</strong> Memastikan pesan tidak diubah selama
-            transmisi
-          </li>
-          <li>
-            <strong>Non-repudiation:</strong> Pengirim tidak dapat menyangkal
-            telah mengirim pesan
-          </li>
+          <li><strong>Authentication:</strong> Verifies that the message originates from a legitimate sender who knows
+            the secret key.</li>
+          <li><strong>Integrity:</strong> Ensures the message was not altered during transmission.</li>
+          <li><strong>Non-repudiation:</strong> The sender cannot deny having sent the message, as only they have the
+            secret key.</li>
         </ul>
-
-        <h5>Cara Kerja MAC:</h5>
+        <h3>How a MAC Works:</h3>
         <ol>
-          <li>Pengirim menghitung MAC dari pesan menggunakan secret key</li>
-          <li>MAC dikirim bersama dengan pesan</li>
-          <li>
-            Penerima menghitung ulang MAC menggunakan secret key yang sama
-          </li>
-          <li>
-            Jika MAC yang dihitung sama dengan MAC yang diterima, pesan valid
-          </li>
+          <li>The sender calculates a MAC value from the message and a shared secret key.</li>
+          <li>The original message and the MAC value are sent to the receiver.</li>
+          <li>The receiver recalculates the MAC using the same message and the shared secret key.</li>
+          <li>If the calculated MAC matches the received MAC, the message is considered authentic and untampered.</li>
         </ol>
       </div>
     </div>
 
     <div class="card mb-4">
       <div class="card-header">
-        <h4><i class="fas fa-shield-alt"></i> What is HMAC?</h4>
+        <h2><i class="fas fa-shield-alt me-2" aria-hidden="true"></i>What is HMAC?</h2>
       </div>
       <div class="card-body">
         <p>
-          <strong>Hash-based Message Authentication Code (HMAC)</strong> adalah
-          implementasi MAC yang menggunakan fungsi hash kriptografi.
+          <strong>Hash-based Message Authentication Code (HMAC)</strong> is a specific type of MAC involving a
+          cryptographic hash function (like SHA-256) and a secret cryptographic key. It is the most common and
+          recommended type of MAC.
         </p>
-
-        <h5>Formula HMAC:</h5>
+        <h3>HMAC Formula:</h3>
         <div class="alert alert-light">
           <code>HMAC(K, m) = H((K ⊕ opad) || H((K ⊕ ipad) || m))</code>
         </div>
-
-        <p>Dimana:</p>
+        <h3>Advantages of HMAC:</h3>
         <ul>
-          <li><strong>K:</strong> Secret key</li>
-          <li><strong>m:</strong> Message</li>
-          <li><strong>H:</strong> Hash function (SHA-256, SHA-512, dll)</li>
-          <li><strong>opad:</strong> Outer padding (0x5C berulang)</li>
-          <li><strong>ipad:</strong> Inner padding (0x36 berulang)</li>
-          <li><strong>⊕:</strong> XOR operation</li>
-          <li><strong>||:</strong> Concatenation</li>
+          <li>Resistant to length extension attacks, a vulnerability in simpler MAC constructions.</li>
+          <li>Built upon well-tested and widely available hash functions.</li>
+          <li>An industry standard defined in RFC 2104.</li>
         </ul>
-
-        <h5>Keunggulan HMAC:</h5>
-        <ul>
-          <li>Tahan terhadap length extension attacks</li>
-          <li>Menggunakan fungsi hash yang sudah teruji</li>
-          <li>Standar industri (RFC 2104)</li>
-          <li>Efisien dan mudah diimplementasi</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="card mb-4">
-      <div class="card-header">
-        <h4><i class="fas fa-code"></i> Implementation Details</h4>
-      </div>
-      <div class="card-body">
-        <h5>1. Simple MAC</h5>
-        <p>Implementasi sederhana: <code>MAC = H(key || message)</code></p>
-        <div class="alert alert-warning">
-          <strong>Kelemahan:</strong> Rentan terhadap length extension attacks
-          pada beberapa hash function.
-        </div>
-
-        <h5>2. Improved MAC</h5>
-        <p>
-          Implementasi yang lebih baik: <code>MAC = H(key || H(message))</code>
-        </p>
-        <div class="alert alert-info">
-          <strong>Keunggulan:</strong> Lebih tahan terhadap beberapa jenis
-          serangan.
-        </div>
-
-        <h5>3. HMAC (Recommended)</h5>
-        <p>Implementasi standar yang menggunakan nested hash dengan padding.</p>
-        <div class="alert alert-success">
-          <strong>Rekomendasi:</strong> Gunakan HMAC untuk aplikasi production.
-        </div>
       </div>
     </div>
   </div>
@@ -118,24 +72,18 @@ endblock %} {% block content %}
   <div class="col-md-4">
     <div class="card mb-4">
       <div class="card-header">
-        <h5>
-          <i class="fas fa-exclamation-triangle"></i> Security Considerations
-        </h5>
+        <h3><i class="fas fa-exclamation-triangle me-2" aria-hidden="true"></i>Security Considerations</h3>
       </div>
       <div class="card-body">
-        <h6>Key Management:</h6>
+        <h4>Key Management</h4>
         <ul>
-          <li>Gunakan key yang cukup panjang (minimal 128 bit)</li>
-          <li>Key harus random dan unpredictable</li>
-          <li>Jangan hardcode key dalam source code</li>
-          <li>Rotasi key secara berkala</li>
+          <li>Use long, random keys (at least 128 bits).</li>
+          <li>Never hardcode keys in source code.</li>
+          <li>Rotate keys periodically.</li>
         </ul>
-
-        <h6>Algorithm Choice:</h6>
+        <h4>Algorithm Choice</h4>
         <ul>
-          <li>
-            <span class="badge bg-success">Recommended:</span> SHA-256, SHA-512
-          </li>
+          <li><span class="badge bg-success">Recommended:</span> SHA-256, SHA-512</li>
           <li><span class="badge bg-warning">Deprecated:</span> SHA-1</li>
           <li><span class="badge bg-danger">Broken:</span> MD5</li>
         </ul>
@@ -144,39 +92,14 @@ endblock %} {% block content %}
 
     <div class="card mb-4">
       <div class="card-header">
-        <h5><i class="fas fa-lightbulb"></i> Use Cases</h5>
+        <h3><i class="fas fa-lightbulb me-2" aria-hidden="true"></i>Common Use Cases</h3>
       </div>
       <div class="card-body">
         <ul>
-          <li><strong>API Authentication:</strong> Verifikasi request API</li>
-          <li><strong>File Integrity:</strong> Deteksi perubahan file</li>
-          <li>
-            <strong>Digital Signatures:</strong> Komponen dalam skema tanda
-            tangan
-          </li>
-          <li><strong>Secure Cookies:</strong> Proteksi session cookies</li>
-          <li><strong>Database Integrity:</strong> Verifikasi data database</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header">
-        <h5><i class="fas fa-tools"></i> Tools & Libraries</h5>
-      </div>
-      <div class="card-body">
-        <h6>Python:</h6>
-        <ul>
-          <li><code>hashlib</code> - Built-in hash functions</li>
-          <li><code>hmac</code> - Built-in HMAC implementation</li>
-          <li><code>cryptography</code> - Advanced crypto library</li>
-        </ul>
-
-        <h6>Other Languages:</h6>
-        <ul>
-          <li><strong>JavaScript:</strong> crypto module, Web Crypto API</li>
-          <li><strong>Java:</strong> javax.crypto.Mac</li>
-          <li><strong>C#:</strong> System.Security.Cryptography</li>
+          <li><strong>API Authentication:</strong> Verifying requests between services.</li>
+          <li><strong>File Integrity:</strong> Detecting if a downloaded file has been tampered with.</li>
+          <li><strong>JSON Web Tokens (JWT):</strong> Securing the signature part of a JWT.</li>
+          <li><strong>Secure Cookies:</strong> Protecting session cookies from being modified.</li>
         </ul>
       </div>
     </div>
