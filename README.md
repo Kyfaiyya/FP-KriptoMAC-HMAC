@@ -268,43 +268,6 @@ Berdasarkan test suite yang dijalankan:
 - ✅ Performance benchmarks show expected relative speeds
 - ✅ Security properties maintained across all implementations
 
-## 🎓 Nilai Edukasi
-
-### Konsep yang Dipelajari
-
-1. **Cryptographic Hash Functions**
-2. **Message Authentication Codes**
-3. **HMAC Construction and Security**
-4. **Key Management Principles**
-5. **Security Analysis and Testing**
-
-### Practical Skills
-
-1. **Python Cryptography Programming**
-2. **Web Application Development**
-3. **Security Implementation Best Practices**
-4. **Testing and Validation Methodologies**
-
-## 🤝 Kontribusi Tim
-
-| Nama             | Role                    | Kontribusi                                     |
-| ---------------- | ----------------------- | ---------------------------------------------- |
-| [Nama Anggota 1] | Backend Developer       | Implementasi algoritma MAC/HMAC, Flask backend |
-| [Nama Anggota 2] | Frontend Developer      | UI/UX design, JavaScript functionality         |
-| [Nama Anggota 3] | Documentation & Testing | Dokumentasi, test suite, security analysis     |
-
-## 📝 Referensi
-
-1. **RFC 2104** - HMAC: Keyed-Hashing for Message Authentication
-2. **FIPS PUB 198-1** - The Keyed-Hash Message Authentication Code (HMAC)
-3. **NIST SP 800-107** - Recommendation for Applications Using Approved Hash Algorithms
-4. **Applied Cryptography** by Bruce Schneier
-5. **Handbook of Applied Cryptography** by Menezes, van Oorschot, and Vanstone
-
-## 📄 Lisensi
-
-Project ini dibuat untuk tujuan edukasi dalam rangka Final Project mata kuliah Kriptografi.
-
 ## 🚀 Cara Menjalankan Program
 
 ### 1. **Persiapan Environment**
