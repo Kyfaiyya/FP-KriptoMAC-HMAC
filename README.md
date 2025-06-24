@@ -62,6 +62,42 @@ Aplikasi web interaktif yang mengimplementasikan dan mendemonstrasikan konsep MA
 - Security considerations dan best practices
 - Use cases dalam dunia nyata
 
+## 📘 Teori Algoritma Hash
+
+Berikut adalah penjelasan singkat mengenai algoritma hash yang diimplementasikan dalam aplikasi ini. Pemahaman ini penting untuk memilih algoritma yang tepat sesuai kebutuhan keamanan.
+
+### MD5 (Message Digest 5)
+
+- Pengembang: Ronald Rivest (1991)
+- Ukuran Output: 128-bit (32 karakter heksadesimal)
+- Status Keamanan: Rusak (Broken)
+- Deskripsi: MD5 adalah salah satu algoritma hash kriptografi pertama yang digunakan secara luas. Namun, pada tahun 1996, celah keamanan yang serius ditemukan, dan sejak itu MD5 sangat rentan terhadap collision attacks (serangan tabrakan), di mana dua input yang berbeda dapat menghasilkan hash yang sama.
+- Penggunaan Saat Ini: Penggunaannya sangat tidak disarankan untuk tujuan keamanan seperti SSL/TLS atau tanda tangan digital. Dalam aplikasi ini, MD5 diimplementasikan hanya untuk tujuan edukasi dan perbandingan historis.
+
+### SHA-1 (Secure Hash Algorithm 1)
+
+- Pengembang: National Security Agency (NSA), AS (1995)
+- Ukuran Output: 160-bit (40 karakter heksadesimal)
+- Status Keamanan: Ditinggalkan (Deprecated)
+- Deskripsi: SHA-1 dirancang untuk memperbaiki kelemahan pada pendahulunya. Selama bertahun-tahun, SHA-1 menjadi standar keamanan web. Namun, kelemahan kriptografis mulai ditemukan pada awal 2000-an. Pada tahun 2017, Google berhasil mendemonstrasikan serangan tabrakan praktis pertama terhadap SHA-1 (dikenal sebagai SHAttered).
+- Penggunaan Saat Ini: Sejak 2017, semua browser utama telah berhenti menerima sertifikat SSL yang menggunakan SHA-1. Seperti MD5, SHA-1 disertakan dalam proyek ini untuk tujuan pembelajaran.
+
+### SHA-256 (Secure Hash Algorithm 2 - 256 bit)
+
+- Pengembang: National Security Agency (NSA), AS
+- Ukuran Output: 256-bit (64 karakter heksadesimal)
+- Status Keamanan: Aman (Secure)
+- Deskripsi: SHA-256 adalah bagian dari keluarga SHA-2, yang berisi beberapa ukuran hash yang berbeda. Hingga saat ini, belum ada serangan signifikan yang ditemukan terhadap SHA-256. Algoritma ini menawarkan keseimbangan yang sangat baik antara keamanan dan performa.
+- Penggunaan Saat Ini: SHA-256 adalah standar industri saat ini. Ia digunakan secara luas dalam berbagai aplikasi keamanan, termasuk protokol TLS, tanda tangan digital, dan merupakan komponen inti dari blockchain Bitcoin. Ini adalah algoritma yang direkomendasikan untuk sebagian besar kasus penggunaan.
+
+### SHA-512 (Secure Hash Algorithm 2 - 512 bit)
+
+- Pengembang: National Security Agency (NSA), AS
+- Ukuran Output: 512-bit (128 karakter heksadesimal)
+- Status Keamanan: Sangat Aman (Very Secure)
+- Deskripsi: SHA-512 juga merupakan bagian dari keluarga SHA-2. Secara teoretis, ia menawarkan tingkat keamanan yang lebih tinggi daripada SHA-256 karena outputnya yang lebih panjang, membuatnya lebih tahan terhadap serangan brute-force. Menariknya, pada arsitektur CPU 64-bit, SHA-512 seringkali lebih cepat daripada SHA-256 karena memanfaatkan ukuran word prosesor yang lebih besar.
+- Penggunaan Saat Ini: Digunakan dalam aplikasi yang memerlukan jaminan keamanan tertinggi. Direkomendasikan jika performa pada sistem 64-bit menjadi prioritas dan keamanan jangka panjang sangat penting.
+
 ## 🛠️ Teknologi yang Digunakan
 
 - **Backend**: Python 3.8+, Flask
@@ -281,3 +317,44 @@ pip install Flask==2.3.3 Werkzeug==2.3.7
 ```
 
 ## 📸 Dokumentasi Hasil Program
+
+### 1. Page Learn Materi MAC & HMAC Tool
+
+![alt text](<Screenshot 2025-06-24 123629.png>)
+![alt text](<Screenshot 2025-06-24 123653.png>)
+
+### 2. Fitur Generate MAC
+
+![alt text](image.png)
+
+### 3. Fitur Verify MAC
+
+### (Output Valid)
+
+![alt text](image-1.png)
+
+### (Output Invalid)
+
+![alt text](docs/3.png)
+
+### 4. Fitur File Integrity (MAC)
+
+![alt text](<docs/Screenshot 2025-06-24 075829.png>)
+
+### 5. Fitur File Hash
+
+![alt text](<docs/Screenshot 2025-06-24 123421.png>)
+
+### 6. Verify File Hash
+
+### (Output Valid)
+
+![alt text](<docs/Screenshot 2025-06-24 123523.png>)
+
+### (Output Invalid)
+
+![alt text](<docs/Screenshot 2025-06-24 123544.png>)
+
+### 7. Fitur Compare Algorithms
+
+![alt text](<docs/Screenshot 2025-06-24 123609.png>)
